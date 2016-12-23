@@ -1,0 +1,10 @@
+---
+  - hosts: webserver
+    tasks:
+      - name: Install Web Components
+        yum: name={{item}} state=present update_cache=yes
+        with_items:
+         - httpd
+         - mod_ssl
+      - name: Start Apache Server
+        service: name=httpd state=restarted
