@@ -10,9 +10,5 @@ cd /srini/ansible
 # Install Web Components Setup
 ansible-playbook playbooks/webserver.yml
 
-# Set Html path
-sudo rm -rf /var/www/html
-sudo ln -fs /srini/html /var/www
-
 # Install Load Balancer (Nginx)
 ansible-playbook playbooks/loadbalancer.yml

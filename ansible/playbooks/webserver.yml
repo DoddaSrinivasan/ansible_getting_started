@@ -1,10 +1,17 @@
 ---
   - hosts: webserver
+    become: true
     tasks:
       - name: Install Web Components
-        yum: name={{item}} state=present update_cache=yes
+        yum: name={{item}} state=present
         with_items:
          - httpd
          - mod_ssl
-      - name: Start Apache Server
-        service: name=httpd state=restarted
+         - libselinux-python
+      - name: Configure apache2 to listen to port 9001
+        lineinfile:
+          dest: /etc/httpd/conf/httpd.conf
+          regexp: '^Listen'
+          line: 'Listen 9001'
+      - name: Start Apache 2 WebServer
+        service: name=httpd state=started
