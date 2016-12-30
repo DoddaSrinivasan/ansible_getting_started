@@ -1,0 +1,6 @@
+---
+sites:
+	default:
+		location: "/"
+		frontend: 80
+		backend: 80

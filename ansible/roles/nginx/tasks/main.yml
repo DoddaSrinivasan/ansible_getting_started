@@ -1,0 +1,23 @@
+---
+- name: Install Nginx
+  yum: name={{item}} state=present
+  with_items: 
+    - nginx
+
+- name: Delete the conf.d Folder
+  file: path=/etc/nginx/conf.d state=absent
+
+- name: Create new conf.d Folder
+  file: path=/etc/nginx/conf.d state=directory
+
+- name: Create the configurations for sites
+  template: 
+    src=nginx.conf.j2 
+    dest=/etc/nginx/conf.d/default.conf
+    mode=0755
+  notify:
+    - Restart Nginx
+    - Reload Nginx
+
+- name: Start Nginx Server
+  service: name=nginx state=started

@@ -7,8 +7,4 @@ sudo yum install -y ansible
 # Change to Ansible Directory
 cd /srini/ansible
 
-# Install Web Components Setup
-ansible-playbook playbooks/webserver.yml
-
-# Install Load Balancer (Nginx)
-ansible-playbook playbooks/loadbalancer.yml
+ansible-playbook playbooks/site.yml

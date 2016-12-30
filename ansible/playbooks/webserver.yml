@@ -1,38 +1,6 @@
 ---
-  - hosts: webserver
-    become: true
-    tasks:
-      - name: Install Web Components
-        yum: name={{item}} state=present
-        with_items:
-         - httpd
-         - mod_ssl
-         - libselinux-python
-
-      - name: Configure apache2 to listen to port 9001
-        lineinfile:
-          dest: /etc/httpd/conf/httpd.conf
-          regexp: '^Listen'
-          line: 'Listen 9001'
-        notify: Restart apache2
-
-      - name: Configure Default Document root
-        lineinfile:
-          dest: /etc/httpd/conf/httpd.conf
-          regexp: '^DocumentRoot'
-          line: 'DocumentRoot /srini/web/html'
-        notify: Restart apache2
-
-      - name: Configure Default Document root
-        lineinfile:
-          dest: /etc/httpd/conf/httpd.conf
-          regexp: '^<Directory'
-          line: '<Directory /srini/web/html>'
-        notify: Restart apache2
-
-      - name: Start Apache 2 WebServer
-        service: name=httpd state=started
-
-    handlers:
-      - name: Restart apache2
-        service: name=httpd state=restarted
+- hosts: webserver
+  become: yes
+  roles:
+    - ../roles/apache2
+    - { role: ../roles/demo_app, app_name: welcome}

@@ -1,0 +1,7 @@
+---
+- name: Install Web Components
+  yum: name={{item}} state=present
+  with_items:
+   - httpd
+   - mod_ssl
+   - libselinux-python

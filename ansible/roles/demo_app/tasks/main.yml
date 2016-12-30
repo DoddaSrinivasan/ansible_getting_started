@@ -1,0 +1,31 @@
+---
+- name: Configure apache2 to listen to port 9001
+  lineinfile:
+    dest: /etc/httpd/conf/httpd.conf
+    regexp: '^Listen'
+    line: 'Listen 9001'
+  notify: Restart apache2
+
+- name: Copy source code
+  copy:
+    src: '{{document_root}}'
+    dest: '/var/www/{{app_name}}'
+    mode: 0755
+  notify: Restart apache2
+
+- name: Configure Default Document root
+  lineinfile:
+    dest: /etc/httpd/conf/httpd.conf
+    regexp: '^DocumentRoot'
+    line: 'DocumentRoot /var/www/{{app_name}}/html'
+  notify: Restart apache2
+
+- name: Configure Default Document root
+  lineinfile:
+    dest: /etc/httpd/conf/httpd.conf
+    regexp: '^<Directory'
+    line: '<Directory "/var/www/{{app_name}}/html">'
+  notify: Restart apache2
+
+- name: Start Apache 2 WebServer
+  service: name=httpd state=started
