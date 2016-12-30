@@ -1,0 +1,19 @@
+---
+document_root: /srini/web/html
+sites:
+  upstreams:
+    app: 
+      group: webserver
+      backend_port: 9001
+    demo:
+      group: webserver
+      backend_port: 9001
+
+  ports:
+    80:
+      app:
+        location: /qa/app
+        upstream: app
+      demo:
+        location: /qa/demo
+        upstream: demo

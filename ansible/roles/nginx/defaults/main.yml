@@ -1,7 +1,11 @@
 ---
 sites:
-  demo:
-    group: webserver
-    location: /demo
-    frontend_port: 80
-    backend_port: 80
+  upstreams:
+    app: 
+      group: webserver
+      backend_port: 80
+  ports:
+    80:
+      app:
+        location: /
+        upstream: app

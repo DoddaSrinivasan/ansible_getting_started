@@ -1,5 +1,0 @@
-[webserver]
-qa
-
-[control]
-control ansible_connection=local

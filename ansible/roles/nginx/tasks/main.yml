@@ -13,7 +13,7 @@
     - Restart Nginx
 
 - name: Create an empty sites-enabled directory
-  file: path=/etc/nginx/sites-available state={{item}}
+  file: path=/etc/nginx/sites-enabled state={{item}}
   with_items:
     - absent
     - directory
@@ -21,9 +21,8 @@
 - name: Create configs
   template:
     src: sites.conf.j2
-    dest: /etc/nginx/sites-enabled/{{item.key}}.conf
+    dest: /etc/nginx/sites-enabled/sites.conf
     mode: 0755
-  with_dict: '{{sites}}'
   notify:
     - Restart Nginx
 

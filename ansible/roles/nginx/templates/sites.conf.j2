@@ -1,13 +1,29 @@
-upstream {{item.key}} {
-{% for server in groups[item.value.group] %}
-	server {{ server }}:{{item.value.backend_port}};
-{% endfor %}
+
+{% for key in sites.upstreams %}
+	{% set upstream = sites.upstreams[key] %}
+
+upstream {{key}} {
+	{% for server in groups[upstream.group] %}
+	server {{ server }}:{{upstream.backend_port}};
+	{% endfor %}
 }
 
-server {
-	listen {{item.value.frontend_port}};
+{% endfor %}
 
-	location {{item.value.location}} {
-		proxy_pass http://{{item.key}}/;
+server{
+	{% for portKey in sites.ports %}
+	{% set port=sites.ports[portKey] %}
+
+	listen {{portKey}};
+
+	{% for locationKey in port %}
+	{% set location=port[locationKey] %}
+
+	location {{location.location}} {
+		proxy_pass http://{{location.upstream}}/;
 	}
+
+	{% endfor %}
+
+	{% endfor %}
 }
