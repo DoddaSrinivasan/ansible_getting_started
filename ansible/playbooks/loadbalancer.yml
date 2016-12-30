@@ -1,5 +1,6 @@
 ---
 - hosts: loadbalancer
+  connection: local
   become: yes
   roles:
     - ../roles/nginx

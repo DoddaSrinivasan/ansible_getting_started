@@ -1,6 +1,7 @@
 ---
 sites:
-	default:
-		location: "/"
-		frontend: 80
-		backend: 80
+  demo:
+    group: webserver
+    location: /demo
+    frontend_port: 80
+    backend_port: 80

@@ -4,20 +4,28 @@
   with_items: 
     - nginx
 
-- name: Delete the conf.d Folder
-  file: path=/etc/nginx/conf.d state=absent
-
-- name: Create new conf.d Folder
-  file: path=/etc/nginx/conf.d state=directory
-
-- name: Create the configurations for sites
-  template: 
-    src=nginx.conf.j2 
-    dest=/etc/nginx/conf.d/default.conf
-    mode=0755
+- name: Configure Nginx Sites
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+    mode: 0755
   notify:
     - Restart Nginx
-    - Reload Nginx
+
+- name: Create an empty sites-enabled directory
+  file: path=/etc/nginx/sites-available state={{item}}
+  with_items:
+    - absent
+    - directory
+
+- name: Create configs
+  template:
+    src: sites.conf.j2
+    dest: /etc/nginx/sites-enabled/{{item.key}}.conf
+    mode: 0755
+  with_dict: '{{sites}}'
+  notify:
+    - Restart Nginx
 
 - name: Start Nginx Server
   service: name=nginx state=started
